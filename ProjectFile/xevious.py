@@ -48,7 +48,7 @@ class App:
         pyxel.bltm(0,self.y_offset * -1, #実画面の表示原点
                    0,   #タイルマップページ番号
                    0, self.Map_y , #タイルマップの表示原点
-                   24,33)   #表示範囲
+                   32,33)   #表示範囲
         
         self.y_offset -= 0.5
         
