@@ -1,0 +1,1 @@
+pyxeleditor .\xevious.pyxres
