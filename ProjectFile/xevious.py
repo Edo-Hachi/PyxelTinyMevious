@@ -5,7 +5,7 @@ class App:
         # 初期化
 
 		#                                                    0       1         2         3         4         5         6         7         8         9        10        11        12        13        14        15
-        pyxel.init(255, 255, caption="Xevious", palette=[0x000000, 0x8CC323, 0x69B923, 0x007846, 0xF0EB3C, 0x194696, 0x7D7D7D, 0xE61414, 0xFFFFFF, 0xFF8000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0xC896B4],
+        pyxel.init(255, 255, caption="Xevious", palette=[0x000000, 0x8CC323, 0x69B923, 0x007846, 0xF0EB3C, 0x194696, 0x7D7D7D, 0xE61414, 0xFFFFFF, 0x824141, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0xC896B4],
                    fps = 60,  quit_key=pyxel.KEY_Q)
   
 
@@ -17,6 +17,9 @@ class App:
 
         self.Map_y = (256 - 32)
         self.y_offset = 8
+        
+        self.px = 100
+        self.py = 100
 
         # 実行
         pyxel.run(self.update, self.draw)
@@ -29,11 +32,23 @@ class App:
         #self.y_offset = 8
         
         #testcode
-        
-        
-        pass
+        #キー入力＆方向転換
+        if pyxel.btn(pyxel.KEY_LEFT):
+            self.px  -= 2
+            #self.mDY = 0
+            
+        if pyxel.btn(pyxel.KEY_RIGHT):            
+            self.px += 2
+            #self.mDY = 0
+            
+        if pyxel.btn(pyxel.KEY_UP):       
+            #self.mDX = 0
+            self.py -=2
 
-
+        if pyxel.btn(pyxel.KEY_DOWN):
+            #self.mDX = 0
+            self.py += 2
+        
     def draw(self):
         # 描画
         # 画面を消去
@@ -50,21 +65,17 @@ class App:
                    0, self.Map_y , #タイルマップの表示原点
                    32,33)   #表示範囲
         
-        self.y_offset -= 0.5
+        #self.y_offset -= 0.5
+        self.y_offset -= 1
         
         if self.y_offset == 0: 
             self.y_offset = 8
             self.Map_y -= 1
         
-        pyxel.blt(
-            10,
-            10,
-            0,  
-            0,
-            0,
-            16,
-            16,
-            15,
-        )
+        #ソルバルウ
+        pyxel.blt(self.px, self.py, 0, 0, 0, 16, 16, 15)
+        
+        #レティクル
+        pyxel.blt(self.px, self.py - 64, 0, 16, 0, 16, 16, 15)
 
 App()
