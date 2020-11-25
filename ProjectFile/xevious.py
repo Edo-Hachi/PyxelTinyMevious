@@ -4,10 +4,10 @@ class App:
     def __init__(self):
         # 初期化
 
-		#                                                    0       1         2         3         4         5         6         7         8         9        10        11        12        13        14        15
-        pyxel.init(255, 255, caption="Xevious", palette=[0x000000, 0x8CC323, 0x69B923, 0x007846, 0xF0EB3C, 0x194696, 0x7D7D7D, 0xE61414, 0xFFFFFF, 0xFF8000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0xC896B4],
-                   fps = 60,  quit_key=pyxel.KEY_Q)
-  
+        pyxel.init(255, 255, caption="Xevious",
+		#                    0         1         2         3         4         5         6         7         8         9         10        11        12        13        14        15
+                    palette=[0x000000, 0x8CC323, 0x69B923, 0x007846, 0xF0EB3C, 0x194696, 0x7D7D7D, 0xE61414, 0xFFFFFF, 0xFF8000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0xC896B4],
+                    fps = 60,  quit_key=pyxel.KEY_Q)
 
         #pyxel.init(255, 255, caption="Xevious", fps=60, quit_key=pyxel.KEY_Q)
         pyxel.load("./assets/xevious.pyxres")
