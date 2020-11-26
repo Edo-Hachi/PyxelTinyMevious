@@ -6,7 +6,7 @@ class App:
 
         pyxel.init(255, 255, caption="Xevious",
 		#                    0         1         2         3         4         5         6         7         8         9         10        11        12        13        14        15
-                    palette=[0x000000, 0x8CC323, 0x69B923, 0x007846, 0xF0EB3C, 0x194696, 0x7D7D7D, 0xE61414, 0xFFFFFF, 0xFF8000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0xC896B4],
+                    palette=[0x000000, 0x8CC323, 0x69B923, 0x007846, 0xF0EB3C, 0x194696, 0x7D7D7D, 0xE61414, 0xFFFFFF, 0x824141, 0xC8AA32, 0x000000, 0x000000, 0x000000, 0x000000, 0xC896B4],
                     fps = 60,  quit_key=pyxel.KEY_Q)
 
         #pyxel.init(255, 255, caption="Xevious", fps=60, quit_key=pyxel.KEY_Q)
@@ -15,7 +15,7 @@ class App:
         pyxel.image(0).load(0, 0, "./assets/xevious_01.png")
         pyxel.image(1).load(0, 0, "./assets/xevious_bg.png")
 
-        self.Map_y = (256 - 32)
+        self.Map_y = (128 - 32)
         self.y_offset = 8
         
         self.px = 100
