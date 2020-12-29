@@ -1,20 +1,16 @@
 import pyxel
+import define
+import enemy
 
-PLAYER_WIDTH = 8
-PLAYER_HEIGHT = 8
-PLAYER_SPEED = 2
+
 
 bullet_list = []    #ザッパー管理リスト
-BULLET_WIDTH = 2
-BULLET_HEIGHT = 8
-BULLET_COLOR = 11
-BULLET_SPEED = 8
-
 
 
 # グローバル変数
-_VSYNC = 0
+#_VSYNC = 0
 
+enemy_list = []    #敵管理リスト
 
 # #線形リストオブジェクトへのupdate一括処理
 def update_list(list):
@@ -22,12 +18,7 @@ def update_list(list):
         elem.update()
 
 #線形リストオブジェクトへのdraw一括処理
-def draw_list(list):
-    for elem in list:
-        elem.draw()
-
-#線形リストオブジェクトへのdraw一括処理
-def draw_bullet_list(list, vsync):
+def draw_list(list, vsync):
     for elem in list:
         elem.draw(vsync)
         
@@ -39,6 +30,7 @@ def flash_list(list):
         elem = list[i]
         if not elem.alive:
             list.pop(i)
+            #print("pop")
         else:
             i += 1
 
@@ -48,14 +40,14 @@ class Bullet:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.w = BULLET_WIDTH
-        self.h = BULLET_HEIGHT
+        self.w = define.BULLET_WIDTH
+        self.h = define.BULLET_HEIGHT
         self.alive = True
         
         bullet_list.append(self)
         
     def update(self):
-        self.y -= BULLET_SPEED
+        self.y -= define.BULLET_SPEED
         
         if self.y + self.h - 1 < 0:
             self.alive = False
@@ -136,9 +128,24 @@ class Gump_main:
             Bullet(self.px, self.py)
             Bullet(self.px + 10, self.py)
         
+        #enemyクラスの共有メンバにプレイヤーの座標をセット
+        enemy.Enemy.player_x = self.px
+        enemy.Enemy.player_y = self.py
+
+        #敵ダミー発生
+        if pyxel.btnp(pyxel.KEY_A, 10, 30):
+            enemy_list.append(enemy.Enemy_Toroid(self.px, self.py, 50, 0))
+
+
+        #自弾更新処理
         update_list(bullet_list)
         flash_list(bullet_list)         
         
+        #敵キャラ更新処理
+        update_list(enemy_list)
+        flash_list(enemy_list)
+
+
     def draw(self):
         # 描画
         # 画面を消去
@@ -150,6 +157,7 @@ class Gump_main:
         
         #pyxel.rect(0,0,100,100, 1)
 
+        #背景表示
         pyxel.bltm(0,self.y_offset * -1, #実画面の表示原点
                 0,   #タイルマップページ番号
                 0, self.Map_y , #タイルマップの表示原点
@@ -163,13 +171,22 @@ class Gump_main:
             self.Map_y -= 1
         
         #ソルバルウ
-        pyxel.blt(self.px, self.py, 0, 0, 0, 16, 16, 15)
+        pyxel.blt(self.px, self.py, 0, 0, 0, 16, 16, define.MASK_COLOR)
         
         #レティクル
-        pyxel.blt(self.px, self.py - 64, 0, 16, 0, 16, 16, 15)
+        pyxel.blt(self.px, self.py - 64, 0, 16, 0, 16, 16, define.MASK_COLOR)
 
         #線形リストオブジェクトの描画処理
         #if self.vsync % 3 == 0:
-        draw_bullet_list(bullet_list, self.vsync)  #ザッパー表示
+        draw_list(bullet_list, self.vsync)  #ザッパー表示
+
+        #敵表示
+        draw_list(enemy_list, self.vsync)  #敵表示
+
+        #debug
+        temp = "PX= " + str(self.px) + ": PY=" + str(self.py)
+        pyxel.text(0, 0, temp, 7)
+
+
 
 Gump_main()
