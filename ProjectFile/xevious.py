@@ -2,10 +2,7 @@ import pyxel
 import define
 import enemy
 
-
-
 bullet_list = []    #ザッパー管理リスト
-
 
 # グローバル変数
 #_VSYNC = 0
