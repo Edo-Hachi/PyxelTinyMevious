@@ -56,9 +56,9 @@ class Bullet:
 
         
         if vsync % 10:
-            pyxel.blt(self.x, self.y, 0, 0, 32, 8, 8 , 15)
+            pyxel.blt(self.x, self.y, 0, 0, 32, define.BULLET_WIDTH, define.BULLET_HEIGHT, define.MASK_COLOR)
         else:
-            pyxel.blt(self.x, self.y, 0, 8, 32, 8, 8 , 15)
+            pyxel.blt(self.x, self.y, 0, 8, 32, define.BULLET_WIDTH, define.BULLET_HEIGHT, define.MASK_COLOR)
         
 
 
@@ -104,20 +104,20 @@ class Gump_main:
         #testcode
         #キー入力＆方向転換
         if pyxel.btn(pyxel.KEY_LEFT):
-            self.px  -= 2
+            self.px  -= define.PLAYER_SPEED
             #self.mDY = 0
             
         if pyxel.btn(pyxel.KEY_RIGHT):            
-            self.px += 2
+            self.px += define.PLAYER_SPEED
             #self.mDY = 0
             
         if pyxel.btn(pyxel.KEY_UP):       
             #self.mDX = 0
-            self.py -=2
+            self.py -=define.PLAYER_SPEED
 
         if pyxel.btn(pyxel.KEY_DOWN):
             #self.mDX = 0
-            self.py += 2
+            self.py += define.PLAYER_SPEED
         
         #ザッパー発射
         #if pyxel.btn(pyxel.KEY_X):
@@ -168,7 +168,7 @@ class Gump_main:
             self.Map_y -= 1
         
         #ソルバルウ
-        pyxel.blt(self.px, self.py, 0, 0, 0, 16, 16, define.MASK_COLOR)
+        pyxel.blt(self.px, self.py, 0, 0, 0, define.PLAYER_WIDTH, define.PLAYER_HEIGHT, define.MASK_COLOR)
         
         #レティクル
         pyxel.blt(self.px, self.py - 64, 0, 16, 0, 16, 16, define.MASK_COLOR)
