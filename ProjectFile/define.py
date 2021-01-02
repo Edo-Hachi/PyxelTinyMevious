@@ -1,3 +1,8 @@
+#ゲームステート
+STATE_TITLE = 0
+STATE_PLAY = 1
+
+
 #スプライト透過色
 MASK_COLOR = 15
 
