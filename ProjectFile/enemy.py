@@ -43,7 +43,8 @@ class Enemy_Toroid(Enemy):
         #アクション開始座標に到達してるか？
         if(self.act_y < self.ey):
             #if(self.px)
-            self.vspd += 0.5
+            if self.vspd <= 4:
+                self.vspd += 0.3
             if self.ex < self.player_x:
                 self.vx = -1
             else:
