@@ -48,9 +48,59 @@ class Bullet:
     def update(self):
         self.y -= define.BULLET_SPEED
         
+        #自弾移動
         if self.y + self.h - 1 < 0:
             self.alive = False
+        
+        # 自弾と敵とのコリジョン
+        i = 0
+        j = 0
+        bx = 0
+        by = 0
+        ex = 0
+        ey = 0
+
+        bx = self.x
+        by = self.y
+
+        while j < len(enemy_list):
+            if enemy_list[j].alive == True:
+
+                ex = enemy_list[j].ex
+                ey = enemy_list[j].ey
+
+                if ey <= by and by <= (ey + enemy_list[j].eh):
+                    if ex <= bx and bx <= (ex + enemy_list[j].ew):
+                        #print("HIT! Bltx = "  + str(bx) + " : Blt y = " + str(by))
+                        #print("HIT! En_x = "  + str(ex) + " : En_y = " + str(ey))
+                        enemy_list[j].alive = False
+                        self.alive = False
             
+            j += 1
+
+        """        
+        while i < len(bullet_list):
+            #bx = bullet_list[i].x
+            #by = bullet_list[i].y
+            bx = self.x
+            by = self.y
+
+            while j < len(enemy_list):
+                ex = enemy_list[j].ex
+                ey = enemy_list[j].ey
+
+                if ey <= by and by <= (ey + enemy_list[j].eh):
+                    if ex <= bx and bx <= (ex + enemy_list[j].ew):
+                        print("HIT! Bltx = "  + str(bx) + " : Blt y = " + str(by))
+                        print("HIT! En_x = "  + str(ex) + " : En_y = " + str(ey))
+                j += 1
+                #print(j)
+
+            i += 1
+
+            #print(i)
+        """
+
     def draw(self, vsync):
 
         #print(str(vsync))
@@ -128,7 +178,8 @@ def _Update_Play(self):
 
         #敵ダミー発生
         if pyxel.btnp(pyxel.KEY_A, 10, 30):
-            enemy_list.append(enemy.Enemy_Toroid(self.px, self.py, 50, 0))
+            #enemy_list.append(enemy.Enemy_Toroid(self.px, self.py, 50, 0))
+            enemy_list.append(enemy.Enemy_Toroid(50, 0, 16, 16))
 
 
         #自弾更新処理
