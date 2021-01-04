@@ -9,8 +9,15 @@ class Enemy:
     player_x = 0
     player_y = 0
 
-    def __init__(self, _px, _py, _ex, _ey):
-        if _px <= 128:
+#    def __init__(self, _px, _py, _ex, _ey):
+    def __init__(self, _ex, _ey, _ew, _eh):
+
+        #エネミーキャラクタ Heigfht Width
+        self.ew = _ew
+        self.eh = _eh
+        
+        #発生位置
+        if self.player_x <= 128:
             self.ex = 128 + random.randint(0, 100)
         else:
             self.ex = 128 - random.randint(0, 100)
@@ -32,7 +39,7 @@ class Enemy:
         self.alive = True
 
         #アクション開始Y座標
-        self.act_y = _py - 60
+        self.act_y = self.player_y - 60
         #enemy_list.append(self)
 
 #トーロイド型の敵
@@ -53,7 +60,7 @@ class Enemy_Toroid(Enemy):
         self.ex += self.vx * self.vspd
 
         #debug
-        print(str(self.player_x) + ":" + str(self.player_y))
+        #print(str(self.player_x) + ":" + str(self.player_y))
 
 
         #画面外に出たら削除
