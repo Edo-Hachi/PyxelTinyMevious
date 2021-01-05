@@ -50,14 +50,15 @@ class Enemy_Toroid(Enemy):
         #アクション開始座標に到達してるか？
         if(self.act_y < self.ey):
             #if(self.px)
-            if self.vspd <= 4:
-                self.vspd += 0.3
+            if self.vspd <= 2: #最大移動速度の抑制
+                self.vspd += 0.2
+
             if self.ex < self.player_x:
                 self.vx = -1
             else:
                 self.vx = 1
 
-        self.ex += self.vx * self.vspd
+        self.ex += int(self.vx * self.vspd)
 
         #debug
         #print(str(self.player_x) + ":" + str(self.player_y))
