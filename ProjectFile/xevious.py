@@ -51,55 +51,20 @@ class Bullet:
         #自弾移動
         if self.y + self.h - 1 < 0:
             self.alive = False
-        
-        # 自弾と敵とのコリジョン
-        i = 0
-        j = 0
-        bx = 0
-        by = 0
-        ex = 0
-        ey = 0
 
         bx = self.x
         by = self.y
 
-        while j < len(enemy_list):
-            if enemy_list[j].alive == True:
+        for i in range(len(enemy_list)):
+            if enemy_list[i].alive == True:
 
-                ex = enemy_list[j].ex
-                ey = enemy_list[j].ey
+                ex = enemy_list[i].ex
+                ey = enemy_list[i].ey
 
-                if ey <= by and by <= (ey + enemy_list[j].eh):
-                    if ex <= bx and bx <= (ex + enemy_list[j].ew):
-                        #print("HIT! Bltx = "  + str(bx) + " : Blt y = " + str(by))
-                        #print("HIT! En_x = "  + str(ex) + " : En_y = " + str(ey))
-                        enemy_list[j].alive = False
+                if ey <= by and by <= (ey + enemy_list[i].eh):
+                    if ex <= bx and bx <= (ex + enemy_list[i].ew):
+                        enemy_list[i].alive = False
                         self.alive = False
-            
-            j += 1
-
-        """        
-        while i < len(bullet_list):
-            #bx = bullet_list[i].x
-            #by = bullet_list[i].y
-            bx = self.x
-            by = self.y
-
-            while j < len(enemy_list):
-                ex = enemy_list[j].ex
-                ey = enemy_list[j].ey
-
-                if ey <= by and by <= (ey + enemy_list[j].eh):
-                    if ex <= bx and bx <= (ex + enemy_list[j].ew):
-                        print("HIT! Bltx = "  + str(bx) + " : Blt y = " + str(by))
-                        print("HIT! En_x = "  + str(ex) + " : En_y = " + str(ey))
-                j += 1
-                #print(j)
-
-            i += 1
-
-            #print(i)
-        """
 
     def draw(self, vsync):
 
@@ -129,13 +94,13 @@ def _Draw_Title(self):
     # 画面を消去
     pyxel.cls(0)
 # 1cha = 4pix
-    txt = "Smell Like a Tiny XEVIOUS"
+    txt = "Smell  Like  Tiny  XEVIOUS"
     txtlen = len(txt) * 4
-    pyxel.text(128 - (txtlen /2), 50, txt, 14)
+    pyxel.text(128 - (txtlen /2), 50, txt, 7)
 
     txt = "Press [1] to Start Game!"
     txtlen = len(txt) * 4
-    pyxel.text(128 - (txtlen /2), 60, txt, 14)
+    pyxel.text(128 - (txtlen /2), 70, txt, 7)
     #pyxel.text(123, 60, txt, 14)
 
 #------------------------------------------------------------------------------
@@ -177,10 +142,17 @@ def _Update_Play(self):
         enemy.Enemy.player_y = self.py
 
         #敵ダミー発生
+        #debug
         if pyxel.btnp(pyxel.KEY_A, 10, 30):
             #enemy_list.append(enemy.Enemy_Toroid(self.px, self.py, 50, 0))
             enemy_list.append(enemy.Enemy_Toroid(50, 0, 16, 16))
 
+        #debug
+        if pyxel.btnp(pyxel.KEY_8, 10, 30):
+            self.scroll = True
+        if pyxel.btnp(pyxel.KEY_9, 10, 30):
+            self.scroll = False
+        
 
         #自弾更新処理
         update_list(bullet_list)
@@ -202,13 +174,42 @@ def _Draw_Play(self):
                 0, self.Map_y , #タイルマップの表示原点
                 32,33)   #表示範囲
         
-        #self.y_offset -= 0.5
-        self.y_offset -= 1
+        #debug
+        if self.scroll == True:
+            self.y_offset -= 0.5
+        #self.y_offset -= 1
         
         if self.y_offset == 0: 
             self.y_offset = 8
             self.Map_y -= 1
         
+
+        #--------------------------------------------------------------------
+        #赤いコアの点滅テスト
+        if self.vsync % 20 == 0:
+            self.colcnt += 1
+        
+        if self.colcnt == 0:
+            pyxel.pal()
+        elif self.colcnt == 1:
+            pyxel.pal(11, 12)
+        elif self.colcnt == 2:
+            pyxel.pal(11, 13)
+        elif self.colcnt == 3:
+            pyxel.pal(11, 14)
+
+        elif self.colcnt == 4:
+            pyxel.pal(11, 14)
+        elif self.colcnt == 5:
+            pyxel.pal(11, 13)
+        elif self.colcnt == 6:
+            pyxel.pal(11, 12)
+        elif self.colcnt == 7:
+            #pyxel.pal()
+            self.colcnt = 0
+        #--------------------------------------------------------------------
+        #赤いコアの点滅テスト        
+
         #ソルバルウ
         pyxel.blt(self.px, self.py, 0, 0, 0, define.PLAYER_WIDTH, define.PLAYER_HEIGHT, define.MASK_COLOR)
         
@@ -233,8 +234,8 @@ class GameMain:
     def __init__(self):
         # 初期化
         pyxel.init(255, 255, caption="Tiny Xevious",
-        #                    0         1         2         3         4         5         6         7         8         9         10        11        12        13        14        15
-                    palette=[0x000000, 0x8CC323, 0x69B923, 0x007846, 0xF0EB3C, 0x194696, 0x7D7D7D, 0xE61414, 0xFFFFFF, 0x824141, 0xC8AA32, 0x000000, 0x000000, 0x000000, 0xffffff, 0xC896B4],
+        #                    0         1         2         3         4         5         6         7(白)     8(未使用)  9         10        11(赤1)   12(赤2)   13(赤3)   14(赤4)   15(透過色)
+                    palette=[0x000000, 0x8CC323, 0x69B923, 0x007846, 0xF0EB3C, 0x194696, 0x7D7D7D, 0xFFFFFF, 0xFFFFFF, 0x824141, 0xC8AA32, 0xff1414, 0xC81414, 0x961414, 0x641414, 0xC896B4],
                     fps = 60,  quit_key=pyxel.KEY_Q)
 
         #pyxel.init(255, 255, caption="Xevious", fps=60, quit_key=pyxel.KEY_Q)
@@ -244,6 +245,10 @@ class GameMain:
         pyxel.image(1).load(0, 0, "./assets/xevious_bg.png")
 
         self.GameState = define.STATE_TITLE
+
+        #debug
+        self.colcnt = 0
+        self.scroll = True
 
         pyxel.run(self.update, self.draw)
 
