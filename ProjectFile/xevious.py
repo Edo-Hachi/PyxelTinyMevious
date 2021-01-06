@@ -94,14 +94,25 @@ def _Draw_Title(self):
     # 画面を消去
     pyxel.cls(0)
 # 1cha = 4pix
-    txt = "Smell  Like  Tiny  XEVIOUS"
-    txtlen = len(txt) * 4
-    pyxel.text(128 - (txtlen /2), 50, txt, 7)
+
+
+    pyxel.blt(63, 50, 1, 0, 208, 128, 47, define.MASK_COLOR)
+    #txt = "Smell  Like  Tiny  XEVIOUS"
+    #txtlen = len(txt) * 4
+    #pyxel.text(128 - (txtlen /2), 50, txt, 7)
 
     txt = "Press [1] to Start Game!"
     txtlen = len(txt) * 4
-    pyxel.text(128 - (txtlen /2), 70, txt, 7)
+    pyxel.text(128 - (txtlen /2), 128, txt, 7)
     #pyxel.text(123, 60, txt, 14)
+
+       
+
+
+    #pyxel.blt(124, 64, #実画面の表示原点
+    #           1,   #タイルマップページ番号
+    #           0, 208 , #タイルマップの表示原点
+    #           128, 46)   #表示範囲
 
 #------------------------------------------------------------------------------
 def _Update_Play(self):
@@ -118,19 +129,28 @@ def _Update_Play(self):
         if pyxel.btn(pyxel.KEY_LEFT):
             self.px  -= define.PLAYER_SPEED
             #self.mDY = 0
+            self.map_offx -= 1
+            #self.map_offy = 0
             
         if pyxel.btn(pyxel.KEY_RIGHT):            
             self.px += define.PLAYER_SPEED
             #self.mDY = 0
+            self.map_offx += 1
+            #self.map_offy = 0
             
         if pyxel.btn(pyxel.KEY_UP):       
             #self.mDX = 0
             self.py -=define.PLAYER_SPEED
+            #self.map_offx = 0
+            self.map_offy -= 1
 
         if pyxel.btn(pyxel.KEY_DOWN):
             #self.mDX = 0
             self.py += define.PLAYER_SPEED
-        
+            #self.map_offx = 0
+            self.map_offy += 1
+
+
         #ザッパー発射
         #if pyxel.btn(pyxel.KEY_X):
         if pyxel.btnp(pyxel.KEY_X, 10, 20):
@@ -169,11 +189,21 @@ def _Draw_Play(self):
         pyxel.cls(0)
 
         #背景表示
-        pyxel.bltm(0,self.y_offset * -1, #実画面の表示原点
+        #debug
+        pyxel.bltm(0,0, #実画面の表示原点
                 0,   #タイルマップページ番号
-                0, self.Map_y , #タイルマップの表示原点
-                32,33)   #表示範囲
-        
+                self.map_offx, self.map_offy , #タイルマップの表示原点
+                32,32)   #表示範囲
+
+#        pyxel.bltm(0,self.y_offset * -1, #実画面の表示原点
+#                0,   #タイルマップページ番号
+#                0, self.Map_y , #タイルマップの表示原点
+#                32,33)   #表示範囲
+
+#            self.map_offx = 0
+#           self.map_offy = 1
+
+
         #debug
         if self.scroll == True:
             self.y_offset -= 0.5
@@ -249,6 +279,10 @@ class GameMain:
         #debug
         self.colcnt = 0
         self.scroll = True
+
+        #debug
+        self.map_offx = 0
+        self.map_offy = 0
 
         pyxel.run(self.update, self.draw)
 
