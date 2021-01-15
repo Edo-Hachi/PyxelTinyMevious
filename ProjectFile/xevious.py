@@ -42,12 +42,12 @@ class Bullet:
         self.w = define.BULLET_WIDTH
         self.h = define.BULLET_HEIGHT
         self.alive = True
-        
+
         bullet_list.append(self)
-        
+
     def update(self):
         self.y -= define.BULLET_SPEED
-        
+
         #自弾移動
         if self.y + self.h - 1 < 0:
             self.alive = False
@@ -71,7 +71,7 @@ class Bullet:
         #print(str(vsync))
         #pyxel.blt(self.x, self.y, 0, 8, 32, 8, 8 , 15)
 
-        
+
         if vsync % 10:
             pyxel.blt(self.x, self.y, 0, 0, 32, define.BULLET_WIDTH, define.BULLET_HEIGHT, define.MASK_COLOR)
         else:
@@ -79,11 +79,13 @@ class Bullet:
 
 #------------------------------------------------------------------------------
 def _Update_Title(self):
+
+    #ゲームスタート
     if pyxel.btn(pyxel.KEY_1):
         self.GameState = define.STATE_PLAY
         self.Map_y = (255 - 32)
         self.y_offset = 8
-        
+
         self.px = 128 - 8   #自機の座標
         self.py = 200
 
@@ -96,7 +98,7 @@ def _Draw_Title(self):
 # 1cha = 4pix
 
 
-    pyxel.blt(63, 50, 1, 0, 208, 128, 47, define.MASK_COLOR)
+    pyxel.blt(58, 50, 1, 0, 208, 140, 47, define.MASK_COLOR)
     #txt = "Smell  Like  Tiny  XEVIOUS"
     #txtlen = len(txt) * 4
     #pyxel.text(128 - (txtlen /2), 50, txt, 7)
@@ -105,9 +107,6 @@ def _Draw_Title(self):
     txtlen = len(txt) * 4
     pyxel.text(128 - (txtlen /2), 128, txt, 7)
     #pyxel.text(123, 60, txt, 14)
-
-       
-
 
     #pyxel.blt(124, 64, #実画面の表示原点
     #           1,   #タイルマップページ番号
@@ -131,14 +130,14 @@ def _Update_Play(self):
             #self.mDY = 0
             self.map_offx -= 1
             #self.map_offy = 0
-            
-        if pyxel.btn(pyxel.KEY_RIGHT):            
+
+        if pyxel.btn(pyxel.KEY_RIGHT):
             self.px += define.PLAYER_SPEED
             #self.mDY = 0
             self.map_offx += 1
             #self.map_offy = 0
-            
-        if pyxel.btn(pyxel.KEY_UP):       
+
+        if pyxel.btn(pyxel.KEY_UP):
             #self.mDX = 0
             self.py -=define.PLAYER_SPEED
             #self.map_offx = 0
@@ -156,7 +155,7 @@ def _Update_Play(self):
         if pyxel.btnp(pyxel.KEY_X, 10, 20):
             Bullet(self.px, self.py)
             Bullet(self.px + 10, self.py)
-        
+
         #enemyクラスの共有メンバにプレイヤーの座標をセット
         enemy.Enemy.player_x = self.px
         enemy.Enemy.player_y = self.py
@@ -172,12 +171,12 @@ def _Update_Play(self):
             self.scroll = True
         if pyxel.btnp(pyxel.KEY_9, 10, 30):
             self.scroll = False
-        
+
 
         #自弾更新処理
         update_list(bullet_list)
-        flash_list(bullet_list)         
-        
+        flash_list(bullet_list)
+
         #敵キャラ更新処理
         update_list(enemy_list)
         flash_list(enemy_list)
@@ -188,13 +187,15 @@ def _Draw_Play(self):
         # 画面を消去
         pyxel.cls(0)
 
-        #背景表示
-        #debug
+        #背景表示(タイルマップ全景表示デバッグ用)
+        #debug--------------------------------------------------------------
         pyxel.bltm(0,0, #実画面の表示原点
                 0,   #タイルマップページ番号
                 self.map_offx, self.map_offy , #タイルマップの表示原点
                 32,32)   #表示範囲
+        #debug--------------------------------------------------------------
 
+        #debug(タイルマップスクロール処理テスト) -------------------------------------------------------------
 #        pyxel.bltm(0,self.y_offset * -1, #実画面の表示原点
 #                0,   #タイルマップページ番号
 #                0, self.Map_y , #タイルマップの表示原点
@@ -202,23 +203,23 @@ def _Draw_Play(self):
 
 #            self.map_offx = 0
 #           self.map_offy = 1
-
+        #debug -------------------------------------------------------------
 
         #debug
         if self.scroll == True:
             self.y_offset -= 0.5
         #self.y_offset -= 1
-        
-        if self.y_offset == 0: 
+
+        if self.y_offset == 0:
             self.y_offset = 8
             self.Map_y -= 1
-        
+
 
         #--------------------------------------------------------------------
         #赤いコアの点滅テスト
         if self.vsync % 20 == 0:
             self.colcnt += 1
-        
+
         if self.colcnt == 0:
             pyxel.pal()
         elif self.colcnt == 1:
@@ -238,11 +239,11 @@ def _Draw_Play(self):
             #pyxel.pal()
             self.colcnt = 0
         #--------------------------------------------------------------------
-        #赤いコアの点滅テスト        
+        #赤いコアの点滅テスト
 
         #ソルバルウ
         pyxel.blt(self.px, self.py, 0, 0, 0, define.PLAYER_WIDTH, define.PLAYER_HEIGHT, define.MASK_COLOR)
-        
+
         #レティクル
         pyxel.blt(self.px, self.py - 64, 0, 16, 0, 16, 16, define.MASK_COLOR)
 
@@ -263,14 +264,14 @@ class GameMain:
 
     def __init__(self):
         # 初期化
-        pyxel.init(255, 255, caption="Tiny Xevious",
+        pyxel.init(256, 256, caption="Tiny Xevious",
         #                    0         1         2         3         4         5         6         7(白)     8(未使用)  9         10        11(赤1)   12(赤2)   13(赤3)   14(赤4)   15(透過色)
                     palette=[0x000000, 0x8CC323, 0x69B923, 0x007846, 0xF0EB3C, 0x194696, 0x7D7D7D, 0xFFFFFF, 0xFFFFFF, 0x824141, 0xC8AA32, 0xff1414, 0xC81414, 0x961414, 0x641414, 0xC896B4],
                     fps = 60,  quit_key=pyxel.KEY_Q)
 
         #pyxel.init(255, 255, caption="Xevious", fps=60, quit_key=pyxel.KEY_Q)
         pyxel.load("./assets/xevious.pyxres")
-        
+
         pyxel.image(0).load(0, 0, "./assets/xevious_01.png")
         pyxel.image(1).load(0, 0, "./assets/xevious_bg.png")
 
