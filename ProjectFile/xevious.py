@@ -264,7 +264,7 @@ class GameMain:
 
     def __init__(self):
         # 初期化
-        pyxel.init(256, 256, caption="Tiny Xevious",
+        pyxel.init(define.WINDOW_WIDTH, define.WINDOW_HEIGHT, caption="Tiny Xevious",
         #                    0         1         2         3         4         5         6         7(白)     8(未使用)  9         10        11(赤1)   12(赤2)   13(赤3)   14(赤4)   15(透過色)
                     palette=[0x000000, 0x8CC323, 0x69B923, 0x007846, 0xF0EB3C, 0x194696, 0x7D7D7D, 0xFFFFFF, 0xFFFFFF, 0x824141, 0xC8AA32, 0xff1414, 0xC81414, 0x961414, 0x641414, 0xC896B4],
                     fps = 60,  quit_key=pyxel.KEY_Q)
